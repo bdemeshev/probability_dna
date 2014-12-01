@@ -1,4 +1,8 @@
 probability_dna
 ===============
 
-The best problems on elementary probability. The DNA of our probability culture :)
+Подборка красивейших задач по элементарной теории вероятностей. Это [наша вероятностная ДНК](https://github.com/bdemeshev/probability_dna/raw/master/probability_dna.pdf), нам любить её и лелеять. 
+
+Подборка в самом начале изготовления. Скоро будет больше :)
+
+
