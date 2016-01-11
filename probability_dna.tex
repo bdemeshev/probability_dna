@@ -28,6 +28,7 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Var}
 \DeclareMathOperator{\E}{E}
+\renewcommand{\P}{\mathbb{P}}
 
 \newcommand{\setrus}{\selectlanguage{russian}}
 \newcommand{\setbrit}{\selectlanguage{british}}
@@ -976,9 +977,26 @@ $\E(N)=e$.
 \item Какова вероятность того, что все игроки попадают в общую цепочку?
 \item Сколько в среднем цепочек в «Киллере»?
 \item Сколько в среднем «самоубийц»?
+\item Рассмотрим вариант, в котором нет самоубийств, то есть раздача бумажек организована так, что ни один игрок не может получить свою бумажку при раздаче. Как изменятся ответы?
 \end{enumerate}
 
 \begin{sol}
+
+\begin{enumerate}
+\item 
+\[
+\P(\text{ровно 5 человек}) = \frac{29}{30} \frac{28}{29} \frac{27}{28} \frac{26}{27} \frac{1}{26} = \frac{1}{30}
+\]
+\end{enumerate}
+
+Вариация без самоубийц
+\begin{enumerate}
+\item 
+\[
+\P(\text{ровно 5 человек}) = 1 \cdot \frac{28}{29} \frac{27}{28} \frac{26}{27} \frac{1}{26} = \frac{1}{29}
+\]
+\end{enumerate}
+
 
 \end{sol}
 
