@@ -1,10 +1,13 @@
 \documentclass[nobib]{tufte-handout}
 
 
+\usepackage{ifluatex, ifxetex}
+
 % black magic!
 % problem with tufte-handout + xelatex
 % http://tex.stackexchange.com/questions/200722/
-\ifxetex
+% https://tex.stackexchange.com/questions/47576/
+\ifx\ifxetex\ifluatex\else % если xelatex или lualatex
   \newcommand{\textls}[2][5]{%
     \begingroup\addfontfeatures{LetterSpace=#1}#2\endgroup
   }
@@ -15,11 +18,23 @@
   \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
 \fi
 
+% с альтернативного источника:
+%\ifluatex % Allow rendering with LuaTeX by setting up the spacing using fontspec features
+%  \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+%  \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+%\fi
+
+% lua produces strange notes
+% https://tex.stackexchange.com/questions/328431
+
 \usepackage{fontspec}
 \usepackage{polyglossia}
 
 \setmainlanguage{russian}
 \setotherlanguages{english}
+
+% заменяем --- на тире, << на кавычки и т.д.:
+\defaultfontfeatures{Ligatures=TeX}
 
 % download "Linux Libertine" fonts:
 % http://www.linuxlibertine.org/index.php?id=91&L=1
@@ -27,6 +42,9 @@
 % why do we need \newfontfamily:
 % http://tex.stackexchange.com/questions/91507/
 \newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+\newfontfamily{\cyrillicfont}{Linux Libertine O}
+\newfontfamily{\cyrillicfontsf}{Linux Libertine O}
+
 
 
 \usepackage{amsmath}
@@ -36,10 +54,10 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{csquotes}
-\usepackage{comment}
-\usepackage{answers}
-\usepackage{tikz}
-\usepackage{todonotes}
+\usepackage{comment} % ingore everything between \begin{comment} \end{comment}
+\usepackage{answers} % separate problems and solutions
+\usepackage{tikz} % pictures with tikz language
+\usepackage{todonotes} % todo in documents
 
 %\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
