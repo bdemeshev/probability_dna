@@ -1,10 +1,10 @@
 \documentclass[nobib]{tufte-handout}
 
 
-\usepackage{ifluatex, ifxetex}
+\usepackage{ifluatex, ifxetex} % проверка, как компилируется файл
 
 % black magic!
-% problem with tufte-handout + xelatex
+% solving problem with tufte-handout + xelatex
 % http://tex.stackexchange.com/questions/200722/
 % https://tex.stackexchange.com/questions/47576/
 \ifx\ifxetex\ifluatex\else % если xelatex или lualatex
@@ -27,8 +27,8 @@
 % lua produces strange notes
 % https://tex.stackexchange.com/questions/328431
 
-\usepackage{fontspec}
-\usepackage{polyglossia}
+\usepackage{fontspec} % работа со шрифтами
+\usepackage{polyglossia} % учим русский как иностранный :)
 
 \setmainlanguage{russian}
 \setotherlanguages{english}
@@ -51,18 +51,21 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{url}
-\usepackage{graphicx}
-\usepackage{csquotes}
+\usepackage{url} % вставка \url{}
+\usepackage{graphicx} % вставка графиков
+\usepackage{csquotes} % адаптирующиеся кавычки командой \enquote{}
 \usepackage{comment} % ingore everything between \begin{comment} \end{comment}
 \usepackage{answers} % separate problems and solutions
 \usepackage{tikz} % pictures with tikz language
 \usepackage{todonotes} % todo in documents
 
+
+\usepackage{enumitem} % для создания своих нумерующих списков (хак для гиперссылок)
+
 %\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \theoremstyle{definition}
-\newtheorem{problem}{Задача}
+% \newtheorem{problem}{Задача}
 % \numberwithin{problem}{section}
 
 \Newassociation{sol}{solution}{solution_file}
@@ -70,6 +73,34 @@
 % solution — имя окружения внутри solution_file
 % solution_file — имя файла в который будет идти запись решений
 % можно изменить далее по ходу
+
+
+% very useful during de-bugging!
+% \usepackage[left]{showlabels}
+% \showlabels{hypertarget}
+% \showlabels{hyperlink}
+
+% магия для автоматических гиперссылок задача-решение
+\newlist{myenum}{enumerate}{3}
+% \newcounter{problem}[chapter] % нумерация задач внутри глав
+\newcounter{problem}
+
+\newenvironment{problem}%
+{%
+\refstepcounter{problem}%
+%  hyperlink to solution
+     % \hypertarget{problem:{\thechapter.\theproblem}}{} % нумерация внутри глав
+     \hypertarget{problem:{\theproblem}}{}
+     %\Writetofile{solution_file}{\protect\hypertarget{soln:\thechapter.\theproblem}{}}
+     \Writetofile{solution_file}{\protect\hypertarget{soln:\theproblem}{}}
+     % \begin{myenum}[label=\bfseries\protect\hyperlink{soln:\thechapter.\theproblem}{\thechapter.\theproblem},ref=\thechapter.\theproblem]
+     \begin{myenum}[label=\bfseries\protect\hyperlink{soln:\theproblem}{\theproblem},ref=\theproblem]
+     \item%
+    }%
+    {%
+    \end{myenum}}
+% для гиперссылок обратно надо переопределять окружение
+% это происходит непосредственно перед подключением файла с решениями
 
 
 \DeclareMathOperator{\Var}{Var}
@@ -2434,6 +2465,17 @@ $2^{2n}/C_{2n}^n$, $\sqrt{\pi n}$, $1-\exp(x^2/4)$; $N/3$
 \end{comment}
 
 \section{Решения}
+
+
+% для гиперссылок на условия
+% http://tex.stackexchange.com/questions/45415
+\renewenvironment{solution}[1]{%
+         % add some glue
+         \vskip .5cm plus 2cm minus 0.1cm%
+         {\bfseries \hyperlink{problem:#1}{#1.}}%
+}%
+{%
+}%
 
 
 \input{solution_file}
