@@ -1,4 +1,5 @@
-
+*.fls
+*-cache.yaml
 probability_dna.blg
 
 probability_dna.aux
