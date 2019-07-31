@@ -1,24 +1,17 @@
 *.fls
 *-cache.yaml
-probability_dna.blg
-
-probability_dna.aux
-
-probability_dna.log
-
-probability_dna.synctex.gz
-
-probability_dna.out
-
-probability_dna.run.xml
-
-
-probability_dna.bcf
-
-probability_dna.bbl
+*.blg
+*.aux
+*.log
+*.synctex.gz
+*.out
+*.run.xml
+*.bcf
+*.bbl
+*.xdv
+*.tdo
+*.fdb_latexmk
 
 solution_file.tex
 
 .DS_Store
-probability_dna.xdv
-*.tdo
