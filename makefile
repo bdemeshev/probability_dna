@@ -7,9 +7,12 @@ $(file_name).pdf: $(file_name).tex
 	# http://tex.stackexchange.com/questions/140814/
 	rm -rf `biber --cache`
 
+
 	# create pdf
 	# will automatically run pdflatex/biber if necessary
 	latexmk -xelatex $(file_name).tex
+	biber $(file_name)
+
 
 	# clean auxillary files
 	latexmk -c $(file_name).tex

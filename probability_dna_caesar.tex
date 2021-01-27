@@ -1,37 +1,30 @@
-\documentclass[nobib]{tufte-handout}
-
-
-% this magick is to solve problem that appeared after update of texlive 2018 to texlive 2020
-% https://tex.stackexchange.com/questions/511341/the-error-occurred-after-the-last-update
-\makeatletter
-\def\nobreak{\penalty\@M}
-\makeatother
- 
+% !BIB TS-program = biber
+\documentclass[a4paper]{caesar_book}
 
 
 
-% black magic!
-% solving problem with tufte-handout + xelatex
-% http://tex.stackexchange.com/questions/200722/
-% https://tex.stackexchange.com/questions/47576/
-\newcommand{\textls}[2][5]{%
-  \begingroup\addfontfeatures{LetterSpace=#1}#2\endgroup
+\usepackage{filecontents}
+\begin{filecontents}{\jobname.bib}
+@book{Tufte2006,
+	author = {Edward R. Tufte},
+	title = {Beautiful Evidence},
+	year = {2006},
+	publisher = {Graphics Press, {LLC}},
+	isbn = {0-9613921-7-7}
 }
-\renewcommand{\allcapsspacing}[1]{\textls[15]{#1}}
-\renewcommand{\smallcapsspacing}[1]{\textls[10]{#1}}
-\renewcommand{\allcaps}[1]{\textls[15]{\MakeTextUppercase{#1}}}
-\renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
-\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+
+@book{Tufte1990,
+	author = {Edward R. Tufte},
+	title = {Envisioning Information},
+	publisher = {Graphics Press},
+	year = {1990},
+	isbn = {0-9613921-1-8}
+}
+\end{filecontents}
 
 
-% с альтернативного источника:
-%\ifluatex % Allow rendering with LuaTeX by setting up the spacing using fontspec features
-%  \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
-%  \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
-%\fi
+\usepackage[colorlinks]{hyperref}
 
-% lua produces strange notes
-% https://tex.stackexchange.com/questions/328431
 
 \usepackage{fontspec} % работа со шрифтами
 \usepackage{polyglossia} % учим русский как иностранный :)
@@ -63,7 +56,7 @@
 \usepackage{comment} % ingore everything between \begin{comment} \end{comment}
 \usepackage{answers} % separate problems and solutions
 \usepackage{tikz} % pictures with tikz language
-%\usepackage{todonotes} % todo in documents
+\usepackage{todonotes} % todo in documents
 
 
 \usepackage{enumitem} % для создания своих нумерующих списков (хак для гиперссылок)
@@ -100,7 +93,7 @@
      %\Writetofile{solution_file}{\protect\hypertarget{soln:\thechapter.\theproblem}{}}
      \Writetofile{solution_file}{\protect\hypertarget{soln:\theproblem}{}}
      % \begin{myenum}[label=\bfseries\protect\hyperlink{soln:\thechapter.\theproblem}{\thechapter.\theproblem},ref=\thechapter.\theproblem]
-     \begin{myenum}[label=\bfseries\protect\hyperlink{soln:\theproblem}{\theproblem},ref=\theproblem]
+     \begin{myenum}[label=\bfseries\protect\hyperlink{soln:\theproblem}{\theproblem}, ref=\theproblem, leftmargin=0pt]
      \item%
     }%
     {%
@@ -135,16 +128,97 @@ style=authoryear]{biblatex}
 \date{\today}
 \begin{document}
 
+% \frontmatter
+% \tableofcontents
+% \mainmatter
+
+\chapter{Quick start}
 
 
-\maketitle
 
-\section{Культурный код}
 
-Сборник восхитительных задач по элементарной теории вероятностей.
-Эти задачи — наша вероятностная ДНК.
 
-\section{Фольклор и красота}
+
+
+УУУУУУУУУУУУ
+
+%
+We compiled a minimal example file to show the basic use of the caesar class, which allows the typesetting of (science) textbooks or theses. The class itself is a reference implementation of the \emph{sidenotes} package. The package provides the additional functionality\sidenote{namely the use of marginal material such as this note or even figures or tables.} and the class gives sensible default values for page margins, chapter formatting and such. The caesar class is derived from the standard \LaTeX-book class and a little bit of experience with the standard class might be very helpful. In this example, biblatex is used for the references.
+
+The first pages of the book (the frontmatter) are not numbered, the numbering starts after the \texttt{mainmatter} macro, which is called after the generation of the title page. The layout has ample margins to allow annotations. A main feature and the package is the sidenote, which is a footnote in the margin and can be placed with the \texttt{sidenote} macro.\sidenote{All information is on the same page, no turning of pages is necessary.} It is very similar to \texttt{footnote} and tries to emulate its behavior. The sidenote moves up or down (floats) to not overlap with other floats in the margin and all the sidenotes are subsequently numbered. 
+
+References can be put in the margin as well.\sidecite[For the ideas behind all this, please see:][ and more work by Tufte.]{Tufte1990,Tufte2006} The macro was named \texttt{sidecite} and is defined with two optional parameters (prefix and postfix) similar to \texttt{cite} taken from the biblatex package. The next two sections describe the different options for the use of figures and tables in a document. We start with a couple of figures.
+% A section with a couple of figures
+\section{Figures}
+%
+\begin{marginfigure}%
+    \includegraphics[width=\marginparwidth]{example-image-a}%
+    \caption{A small rectangle put in the margin.\label{rectangle}}%
+\end{marginfigure}%
+%
+There are three basic options to include figures in a document. The first option is a small figure and its caption in the margin. Figure \ref{rectangle} shows that with a gray rectangle framing the letter \emph{A}. We simply use the \texttt{marginfigure} environment instead of the \texttt{figure} one. 
+
+The next alternative is a figure in the text frame. The figure is placed using the regular \LaTeX-figure environment and its  caption, which is displayed in figure~\ref{rectangle2}. 
+%
+\begin{figure}[htbp]%
+	\includegraphics[height=180pt,width=\textwidth]{example-image-b}%
+	\caption{A larger rectangle in the main area of the text, i.e.\ it does not span into the margin.}%
+	\label{rectangle2}%
+\end{figure}%
+%
+
+In case that a wider figure is needed, the third option spans over the text as well as the margin area. Here, the common \texttt{figure*} environment can be used. The figure options make it easy to choose the appropriate size for a given input file. 
+%
+\begin{figure*}[htbp]
+    \includegraphics[height=180pt,width=400pt]{example-image-c}%
+    \caption{An even larger rectangle. This is the widest figure option. Both, the text as well as the margin width are used for the diagram.}
+    \label{rectangle3}
+\end{figure*}
+%
+
+% Next section with a variety of tables
+\section{Tables}
+The same set of options (small, normal and wide) are also available for tables. The first option is a small table in the margin, this \texttt{margintable} is shown in table \ref{table1}.
+%
+\begin{margintable}%
+	\begin{tabular}{lll}%
+     A&B&C\\%
+     0.50&0.47&0.48\\%
+    \end{tabular}%
+	\vspace{2pt}
+	\caption{A couple of numbers in a table in the margin.\label{table1}}%
+\end{margintable}%
+
+Table \ref{table2} displays a larger table with more numbers. This is done using regular \LaTeX-macros for placing the table along with its caption. 
+%
+\begin{table}[htbp]%
+	 \begin{tabular}{lllllllll}%
+     A&B&C&D&E&F&G&H&I\\%
+    0.50&0.47&0.48&0.50&0.47&0.48&0.60&0.39&1.00\\%
+    \end{tabular}%
+	\vspace{2pt}%
+	\captionsetup{width=\textwidth, justification=justified}%
+	\caption{A couple of numbers in a larger table. This table spans the usual text width.\label{table2}}%
+\end{table}%
+
+The \texttt{table*} environment is also defined in analogy to \texttt{figure*} and is demonstrated in table \ref{table3}.
+%
+\begin{table*}[h!]
+ \begin{tabular}{lllllllllllll}%
+     A&B&C&D&E&F&G&H&I&J&K&L&M\\%
+    0.50&0.47&0.48&0.50&0.47&0.48&0.60&0.39&1.00&0.50&0.47&0.48&0.60\\%
+  \end{tabular}%
+  \vspace{2pt}
+  \caption{Even more numbers in a big table are shown here. This table spans across the full page, text width plus margin.\label{table3}}%
+\end{table*}
+
+%
+\section{More information}
+\marginpar{It is also possible to put a comment in the margin without a corresponding mark in the text with \texttt{marginpar}.} This is a short example file to show the features of the caesar class together with the sidenotes package. Sometimes it is necessary to compile the document up to 3 times in order to get the alignment of all objects correctly.
+%
+
+
+
 
 
 \Opensolutionfile{solution_file} % [sols_chap_07]
@@ -155,7 +229,7 @@ style=authoryear]{biblatex}
 \begin{problem}
 Задача о Сумасшедшей Старушке.
 
-\marginnote{Родилась она чисто из жизни — а именно, тогда,
+\sidenote{Родилась она чисто из жизни — а именно, тогда,
 когда ещё юному автору приходилось часто ездить из Питера во Псков.
 Чаще всего билет на покупался в общий вагон поезда. На билете всегда было указано место.
 Но не тут-то было! Приходя в вагон, обнаруживалось,
@@ -186,7 +260,7 @@ style=authoryear]{biblatex}
 \end{enumerate}
 
 \begin{figure*}
-  \includegraphics[width=17cm]{images/crazy_woman.jpg}
+  %\includegraphics[width=17cm]{images/crazy_woman.jpg}
   \caption{— Простите, пожалуйста, это место 1Б?}
 \end{figure*}
 
@@ -269,6 +343,11 @@ $\E(X) = 0 \cdot \frac{99}{100} + 1 \cdot \frac{1}{100} \cdot \frac{1}{99} +
 \end{sol}
 
 \end{problem}
+
+
+
+
+
 
 
 \begin{problem}
@@ -407,7 +486,7 @@ $\verb|aa|:(p_3+0.5 \cdot p_2)^2 = q'^2$
 вертикальную и горизонтальную.
 Поэтому состояние отдельного поляризованного фотона
 может быть описано углом $\alpha$.
-\marginnote{На самом деле внутренний мир фотона гораздо разнообразнее.}
+\sidenote{На самом деле внутренний мир фотона гораздо разнообразнее.}
 Поляризационный фильтр описывается углом поворота $\theta$.
 Фотон в состоянии $\alpha$ задерживается поляризационным фильтром с параметром $\theta$
 с вероятностью $p=\sin^2(\alpha-\theta)$ или
@@ -425,7 +504,7 @@ $\verb|aa|:(p_3+0.5 \cdot p_2)^2 = q'^2$
 Первый фильтр — с $\theta=0$, второй — c $\theta=\beta$, третий — с $\theta=\pi/2$.
 Какова вероятность того, что фотон пройдет через все три фильтра?
 При каких $\alpha$ и $\beta$ она будет максимальной и чему при этом она будет равна?
-\marginnote{Как сделать «секретный монитор» своими руками,
+\sidenote{Как сделать «секретный монитор» своими руками,
 \url{http://www.youtube.com/watch?v=-ojbykV1zyc}}
 \item Объясните следующий фокус. Фокусник берет два специальных стекла и видно,
 что свет сквозь них не проходит. Фокусник ставит между двумя стёклами третье,
@@ -563,7 +642,7 @@ $\P(\text{фотон в состоянии } \beta
 \begin{problem}
 Злобный дракон поймал трех гномов. И решил поиграться с ними.
 Каждому гному он надевает с равными вероятностями черный или белый колпак.
-\marginnote{ — Значит, дракон — это датчик случайных колпаков?}
+\sidenote{ — Значит, дракон — это датчик случайных колпаков?}
 
 
 Гномы видят чужие колпаки, но не видят своих и не могут общаться после выдачи колпаков.
@@ -580,12 +659,12 @@ $\P(\text{фотон в состоянии } \beta
 \item Если от далекого спутника нужно получить один бит информации («да» или «нет»),
 то, отправив три бита, можно не бояться того, что природа «испортит» один из них.
 Постройте этот простой код. Проведите аналогию с предыдущим пунктом.
-\marginnote{ — Три гнома — три бита?}
+\sidenote{ — Три гнома — три бита?}
 \end{enumerate}
 Идея этой задачи используется не только при космической связи.
 Чтобы неглубокие царапины на компакт диске не вызывали потерь данных,
 при записи используется код Рида-Соломона.
-\marginnote{ — А как звали третьего гнома?}
+\sidenote{ — А как звали третьего гнома?}
 
 \begin{sol}
 \begin{enumerate}
@@ -637,7 +716,7 @@ $\P(\text{фотон в состоянии } \beta
 Париж, Людовик XIV, 1654 год, высшее общество говорит о рождении новой науки —
 теории вероятностей. Ах, кавалер де Мере,
 «fort honnête homme sans être mathématicien»\ldots
-\marginnote{«благородный человек, хотя и не математик».}
+\sidenote{«благородный человек, хотя и не математик».}
 Старая задача, неправильные решения которой предлагались тысячелетиями
 (например, одно из неправильных решений предлагал изобретатель двойной записи,
 кумир бухгалтеров, Лука Пачоли) наконец решена правильно!
@@ -1175,7 +1254,7 @@ p(\alpha)=\begin{cases}
 {1 - \left(\frac{23}{24}\right)^2} = \frac{23}{47} \approx 0.489
 \]
 
-%\todo[inline]{проверить! интуитивно около 1/2 должно быть}
+\todo[inline]{проверить! интуитивно около 1/2 должно быть}
 
 \end{enumerate}
 \end{sol}
@@ -1276,7 +1355,7 @@ Buffon's needle problem
 \item Обозначим количество нажатий до появления слова «абракадабра» за $X$.
 Найдём $\E(X)$.
 
-%\todo[inline]{Мы в России! 33!}
+\todo[inline]{Мы в России! 33!}
 
 Для упрощения ситуации предположим, что на печатной машинке есть всего $33$ кнопок,
 соответствующих $33$ буквам русского алфавита.
@@ -1476,7 +1555,7 @@ Monty-Hall версия
 Задача о Разборчивой Невесте, Secretary problem
 
 К Разборчивой невесте выстроилась длинная-длинная вереница из потенциальных женихов.
-\marginnote{Докторская диссертация член-корреспондента РАН Бориса Березовского
+\sidenote{Докторская диссертация член-корреспондента РАН Бориса Березовского
 «Разработка теоретических основ алгоритмизации принятия
 предпроектных решений и их применения»
 является обобщением задачи о разборчивой невесте,
@@ -1494,7 +1573,7 @@ Monty-Hall версия
 Чему равна вероятность выбора самого богатого жениха Разборчивой невестой?
 \item Подруга-дурнушка Разборчивой невесты хочет
 выбрать второго по богатству жениха и только его!
-\marginnote{Всё равно самый богатый достанется Разборчивой невесте!}
+\sidenote{Всё равно самый богатый достанется Разборчивой невесте!}
 Как выглядит её оптимальная стратегия? Чему равна вероятность выбора
 второго по богатству жениха Подругой-дурнушкой?
 \end{enumerate}
@@ -1818,13 +1897,13 @@ $\P(\text{случайно выбранный ковбой выживет}) =1/2
 
 
 \begin{problem}
-Есть три рулетки: \marginnote{Кто первый встал, того и тапки!}
+Есть три рулетки: \sidenote{Кто первый встал, того и тапки!}
 на первой равновероятно выпадают числа 2, 4 и 9; на второй — 1, 6 и 8;
 на третьей — 3, 5 и 7. Сначала первый игрок выбирает рулетку себе,
 затем второй игрок выбирает рулетку себе из двух оставшихся.
 После этого рулетки, выбранные игроками, запускаются,
 и случай определяет победителя. Победителем считается тот,
-чья рулетка покажет большее число. \marginnote{Первой пташке достается червячок,
+чья рулетка покажет большее число. \sidenote{Первой пташке достается червячок,
 но сыр съедает вторая мышка.}
 
 \begin{enumerate}
@@ -2028,7 +2107,7 @@ $\P(\text{победит С}) = 0.32 + 0.08 = 0.4$
 
 \begin{problem}
 Задача о немецких танках
-\marginnote{Незадолго до высадки союзников в Нормандии, 6 июня 1944 года,
+\sidenote{Незадолго до высадки союзников в Нормандии, 6 июня 1944 года,
 в распоряжении союзников было всего два (!) немецких танка «Пантера V».
 По серийным номерам на шасси танков союзники оценили выпуск
 в феврале 1944 в 270 танков.
@@ -2810,7 +2889,7 @@ $a_{tj}\cdot \frac{\theta^{j-1}}{(\theta+1)(\theta+2)\dots(\theta+t-1)}$
 a_{tj}=(t-1)a_{(t-1)j}+a_{(t-1)(j-1)}
 \]
 
-%\todo[inline]{переписать :)}
+\todo[inline]{переписать :)}
 
 Попытками выразить элемент $a_{tj}$ через $t$ и $j$
 через производящие функции от двух переменных
@@ -2846,7 +2925,7 @@ $\frac{F_{1000}}{2^{1000}}$
 \begin{problem}
 Двигаемся вверх-вниз или влево-вправо по фрактальному множеству.
 
-%\todo[inline]{добавить рисунок множества!}
+\todo[inline]{добавить рисунок множества!}
 
 
 \begin{enumerate}
@@ -2996,7 +3075,7 @@ $(\pi+2)/4\pi$
 \]
 	Отсюда, $p_2 = \mu^2 / (1+\mu + \mu^2)$.
 
-	%\todo[inline]{Решается ли для произвольного парикмахера в явном виде?}
+	\todo[inline]{Решается ли для произвольного парикмахера в явном виде?}
 
 \end{sol}
 
@@ -3112,7 +3191,7 @@ q = \gamma + (1-\gamma)(2p\alpha - p^2\alpha^2)
 \item \ldots
 \end{enumerate}
 
-%\todo[inline]{Оригинал статьи? вопрос про отношение площади к чему-то там?}
+\todo[inline]{Оригинал статьи? вопрос про отношение площади к чему-то там?}
 
 
 \begin{sol}
@@ -3328,7 +3407,7 @@ $S_k = \card \{ (i, j) | |v_i - v_j| \leq k\}$, то $S_k < (2k-1) S_1$.
 Декартово произведение $v \times v$ представляет собой сеточку точек.
 Точки мы рассматриваем с учётом их кратности:
 
-%\todo[inline]{картинка}
+\todo[inline]{картинка}
 
 Разделим плоскость на диагональные полосы единичной ширины.
 Мы докажем, что каждая полоса содержит строго меньше элементов,
@@ -3337,11 +3416,11 @@ $S_k = \card \{ (i, j) | |v_i - v_j| \leq k\}$, то $S_k < (2k-1) S_1$.
 При этом на центральную полосу будет добавляться либо один элемент, либо блок.
 
 
-%\todo[inline]{картинка}
+\todo[inline]{картинка}
 
 Самый плохой случай — регулярная сетка:
 
-%\todo[inline]{картинка}
+\todo[inline]{картинка}
 
 Две центральных полосы дают $S_1$ точек.
 Каждая полоса кроме двух центральных даёт меньше $S_1$ точек.
@@ -3508,7 +3587,7 @@ $N=X_1 + X_2 + \ldots + X_n$ и получаем:
 
 \begin{problem}
 
-%\todo[inline]{Тут график с обозначенным началом, концом, мин и макс.}
+\todo[inline]{Тут график с обозначенным началом, концом, мин и макс.}
 
 Начинающий трейдер Афанасий совершает не более одной сделки в день.
 
@@ -3525,7 +3604,7 @@ $N=X_1 + X_2 + \ldots + X_n$ и получаем:
 
 
 \begin{problem}
-  %\todo[inline]{Проверить про нечётность!}
+  \todo[inline]{Проверить про нечётность!}
   В мешке 100 монеток. Из них 37 правильных. Все 100 монеток подбрасывают одновременно.
 
   Какова вероятность того, что выпадет чётное количество орлов?
@@ -3712,7 +3791,7 @@ $2^{2n}/C_{2n}^n$, $\sqrt{\pi n}$, $1-\exp(x^2/4)$; $N/3$
 \url{https://ru.wikisource.org/wiki/Дуэльный_кодекс_В._Дурасова#Дуэль_с_приближением}
 \url{https://ru.wikipedia.org/wiki/Четверная_дуэль}
 
-%\todo[inline]{непрерывность? заменить на вариант без барьеров?}
+\todo[inline]{непрерывность? заменить на вариант без барьеров?}
 
   \begin{sol}
     В равновесии в чистых стратегиях оба стреляют одновременно.
@@ -3933,7 +4012,7 @@ $2^{2n}/C_{2n}^n$, $\sqrt{\pi n}$, $1-\exp(x^2/4)$; $N/3$
 приговор с вероятностью $p$.
 При каком $p$ вероятность обвинительного приговора будет максимальной?
 
-%\todo[inline]{Добавить ссылок на источник!}
+\todo[inline]{Добавить ссылок на источник!}
 \begin{sol}
 При большом количестве судей $p \to 4/5$.
 \url{https://sbseminar.wordpress.com/2016/01/22/pious-penal-probability-puzzle/}
@@ -4155,6 +4234,14 @@ p(1-q) + (1-p)q = 0.5
 красивые задачи из старой версии задачника\ldots
 
 
+
+
+
+
+
+
+
+
 \Closesolutionfile{solution_file}
 
 \section{Чуть менее классические задачи}
@@ -4173,7 +4260,7 @@ p(1-q) + (1-p)q = 0.5
 
 
 \item Для простоты предположим, что ген карих глаз доминирует ген синих. Т.е. у носителя пары bb глаза синие, а у носителя пар BB и Bb — карие. У диплоидных
-организмов \marginnote{А мы тут все диплоидные :)} одна аллель наследуется от папы, а одна — от мамы. В семье у кареглазых родителей два сына — кареглазый и
+организмов \sidenote{А мы тут все диплоидные :)} одна аллель наследуется от папы, а одна — от мамы. В семье у кареглазых родителей два сына — кареглазый и
 синеглазый. Кареглазый женился на синеглазой девушке. Какова
 вероятность рождения у них синеглазого ребенка?
 
@@ -4224,6 +4311,9 @@ p(1-q) + (1-p)q = 0.5
 
 \end{comment}
 
+
+
+
 \section{Решения}
 
 
@@ -4241,16 +4331,11 @@ p(1-q) + (1-p)q = 0.5
 \input{solution_file}
 
 
-%\listoftodos
-
-\section{Источники мудрости}
-
-Источники мудрости, кои автор подборки постарался не замутить.
-Смело направляйте к ним верблюдов своего любопытства!
-
-\nocite{*}
-
-\printbibliography
 
 
+
+
+
+\printbibliography[heading=bibintoc]
+ %
 \end{document}
