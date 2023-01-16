@@ -10,8 +10,8 @@ $(file_name).pdf: $(file_name).tex
 
 	# create pdf
 	# will automatically run pdflatex/biber if necessary
-	# latexmk -xelatex -shell-escape $(file_name).tex
-	arara -v $(file_name).tex
+	latexmk -xelatex -shell-escape $(file_name).tex
+	# arara -v $(file_name).tex
 
 	# clean auxillary files
 	# latexmk -c $(file_name).tex
